@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:xlomobx/helpers/extensions.dart';
@@ -140,6 +141,7 @@ abstract class _SignupStore with Store {
       GetIt.I<UserManagerStore>().setUser(resultUser);
       print(resultUser);
     } catch (e, ex) {
+      debugPrint("$e >>> $ex");
       error = e;
     }
 

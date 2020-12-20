@@ -1,4 +1,4 @@
-import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:xlomobx/models/user_model.dart';
 import 'package:xlomobx/repositories/parse_errors.dart';
 import 'package:xlomobx/repositories/table_keys.dart';
@@ -12,10 +12,10 @@ class UserRepository {
     final parseUser =
         ParseUser(userModel.email, userModel.password, userModel.email);
 
-    parseUser.set<String>(KeyUserName, userModel.name);
-    parseUser.set<String>(KeyUserEmail, userModel.email);
-    parseUser.set<String>(KeyUserPhone, userModel.phone);
-    parseUser.set(KeyUserType, userModel.type.index);
+    parseUser.set<String>(keyUserName, userModel.name);
+    parseUser.set<String>(keyUserEmail, userModel.email);
+    parseUser.set<String>(keyUserPhone, userModel.phone);
+    parseUser.set(keyUserType, userModel.type.index);
     // parseUser.set<String>(KeyUserPassword, userModel.password);
     //parseUser.set<String>(KeyUserPassword2, userModel.password2);
 
@@ -43,11 +43,11 @@ class UserRepository {
   UserModel mapParseToUserModel(ParseUser parseUser) {
     return UserModel(
         id: parseUser.objectId,
-        name: parseUser.get(KeyUserName),
-        email: parseUser.get(KeyUserEmail),
-        phone: parseUser.get(KeyUserPhone),
-        type: UserType.values[parseUser.get(KeyUserType)],
-        createdAt: parseUser.get(KeyUserCreatedAt));
+        name: parseUser.get(keyUserName),
+        email: parseUser.get(keyUserEmail),
+        phone: parseUser.get(keyUserPhone),
+        type: UserType.values[parseUser.get(keyUserType)],
+        createdAt: parseUser.get(keyUserCreatedAt));
   }
 
   Future<UserModel> currentUser() async {

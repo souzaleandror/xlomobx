@@ -8,6 +8,25 @@ class ImageDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Dialog(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.file(image),
+          FlatButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              onDeleted();
+            },
+            child: Text(
+              "Deletar",
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

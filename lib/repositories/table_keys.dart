@@ -1,8 +1,29 @@
-const KeyUserId = 'objectId';
-const KeyUserName = 'name';
-const KeyUserEmail = 'email';
-const KeyUserPhone = 'phone';
-const KeyUserPassword = 'password';
-const KeyUserPassword2 = 'password2';
-const KeyUserType = 'type';
-const KeyUserCreatedAt = 'createdAt';
+const keyUserId = 'objectId';
+const keyUserName = 'name';
+const keyUserEmail = 'email';
+const keyUserPhone = 'phone';
+const keyUserPassword = 'password';
+const keyUserPassword2 = 'password2';
+const keyUserType = 'type';
+const keyUserCreatedAt = 'createdAt';
+
+const keyCategoryTable = 'Categories';
+const keyCategoryId = 'objectId';
+const keyCategoryDescription = 'description';
+
+const String keyAdTable = 'Ad';
+const String keyAdId = 'objectId';
+const String keyAdTitle = 'title';
+const String keyAdDescription = 'description';
+const String keyAdHidePhone = 'hidePhone';
+const String keyAdPrice = 'price';
+const String keyAdStatus = 'status';
+const String keyAdDistrict = 'district';
+const String keyAdCity = 'city';
+const String keyAdPostalCode = 'postalCode';
+const String keyAdFederativeUnit = 'federativeUnit';
+const String keyAdImages = 'images';
+const String keyAdCategory = 'category';
+const String keyAdOwner = 'ownwer';
+const String keyAdCreatedAt = 'createdAt';
+const String keyAdViews = 'views';

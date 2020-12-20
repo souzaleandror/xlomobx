@@ -6,7 +6,7 @@ import 'package:xlomobx/screens/signup/signup_screen.dart';
 import 'package:xlomobx/stores/login_store.dart';
 
 class LoginScreen extends StatelessWidget {
-  LoginStore loginStore = LoginStore();
+  final LoginStore loginStore = LoginStore();
 
   @override
   Widget build(BuildContext context) {

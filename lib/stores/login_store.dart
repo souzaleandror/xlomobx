@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:xlomobx/helpers/extensions.dart';
@@ -35,9 +36,8 @@ abstract class _LoginStore with Store {
 
   @computed
   bool get pass1Valid => pass1 != null && pass1.length >= 6;
-  String get pass1Error {
-    pass1 == null || pass1Valid ? null : 'Senha nao valida';
-  }
+  String get pass1Error =>
+      pass1 == null || pass1Valid ? null : 'Senha nao valida';
 
   @computed
   Function get loginPressed => emailValid && pass1Valid ? _login : null;
@@ -58,6 +58,7 @@ abstract class _LoginStore with Store {
       GetIt.I<UserManagerStore>().setUser(resultUser);
       print(resultUser);
     } catch (e, ex) {
+      debugPrint("$e >>> $ex");
       error = e;
     }
 
