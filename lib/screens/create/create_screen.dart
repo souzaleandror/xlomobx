@@ -6,6 +6,8 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:xlomobx/components/custom_drawer/custom_drawer.dart';
 import 'package:xlomobx/components/error_box.dart';
+import 'package:xlomobx/models/ad.dart';
+import 'package:xlomobx/screens/myads/myads_screen.dart';
 import 'package:xlomobx/stores/create_store.dart';
 import 'package:xlomobx/stores/page_store.dart';
 
@@ -15,12 +17,21 @@ import 'components/hide_phone_field.dart';
 import 'components/images_field.dart';
 
 class CreateScreen extends StatefulWidget {
+  final Ad ad;
+  CreateScreen({this.ad});
+
   @override
-  _CreateScreenState createState() => _CreateScreenState();
+  _CreateScreenState createState() => _CreateScreenState(this.ad);
 }
 
 class _CreateScreenState extends State<CreateScreen> {
-  final CreateStore createStore = CreateStore();
+  final CreateStore createStore;
+
+  _CreateScreenState(Ad ad)
+      : editing = ad != null,
+        createStore = CreateStore(ad ?? Ad());
+
+  bool editing;
 
   @override
   void initState() {
@@ -33,7 +44,16 @@ class _CreateScreenState extends State<CreateScreen> {
     // });
 
     when((_) => createStore.savedAd, () {
-      GetIt.I<PageStore>().setPage(0);
+      if (editing) {
+        Navigator.of(context).pop(true);
+      } else {
+        GetIt.I<PageStore>().setPage(0);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => MyAdsScreen(initialPage: 1),
+          ),
+        );
+      }
     });
   }
 
@@ -48,9 +68,9 @@ class _CreateScreenState extends State<CreateScreen> {
     final contentPadding = const EdgeInsets.fromLTRB(16, 10, 12, 10);
 
     return Scaffold(
-      drawer: CustomDrawer(),
+      drawer: editing ? null : CustomDrawer(),
       appBar: AppBar(
-        title: Text("Criar Anuncio"),
+        title: editing ? Text('Editar Anuncio') : Text("Criar Anuncio"),
         elevation: 0,
         centerTitle: true,
       ),
@@ -94,6 +114,7 @@ class _CreateScreenState extends State<CreateScreen> {
                       ImagesField(createStore),
                       Observer(builder: (_) {
                         return TextFormField(
+                          initialValue: createStore.title,
                           onChanged: createStore.setTitle,
                           decoration: InputDecoration(
                             labelText: "Titulo *",
@@ -105,6 +126,7 @@ class _CreateScreenState extends State<CreateScreen> {
                       }),
                       Observer(builder: (_) {
                         return TextFormField(
+                          initialValue: createStore.description,
                           onChanged: createStore.setDescription,
                           maxLength: 250,
                           maxLines: null,
@@ -126,6 +148,7 @@ class _CreateScreenState extends State<CreateScreen> {
                       Observer(
                         builder: (_) {
                           return TextFormField(
+                            initialValue: createStore.priceText,
                             onChanged: createStore.setPrice,
                             keyboardType:
                                 TextInputType.numberWithOptions(decimal: true),

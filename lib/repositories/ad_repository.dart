@@ -152,4 +152,27 @@ class AdRepository {
       return Future.error('Falha ao subir imagens');
     }
   }
+
+  Future<List<Ad>> getMyAds(UserModel user) async {
+    final currentUser = ParseUser('', '', '')..set(keyUserId, user.id);
+    final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyAdTable));
+
+    queryBuilder.setLimit(100);
+    queryBuilder.orderByAscending(keyAdCreatedAt);
+    queryBuilder.whereEqualTo(keyAdOwner, currentUser.toPointer());
+    queryBuilder.includeObject([keyAdCategory, keyAdOwner]);
+
+    final response = await queryBuilder.query();
+    if (response.success && response.results != null) {
+      return response.results.map((po) => Ad.fromParse(po)).toList();
+    } else if (response.success && response.results == null) {
+      return [];
+    } else {
+      return Future.error(
+        ParseErrors.getDescription(
+          response.error.code,
+        ),
+      );
+    }
+  }
 }
