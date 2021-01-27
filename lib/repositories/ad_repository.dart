@@ -90,6 +90,9 @@ class AdRepository {
       final parseUser = ParseUser('', '', '')..set(keyUserId, ad.user.id);
 
       final adObject = ParseObject(keyAdTable);
+
+      if (ad.id != null) adObject.objectId = ad.id;
+
       final parseAcl = ParseACL(owner: parseUser);
       parseAcl.setPublicReadAccess(allowed: true);
       parseAcl.setPublicWriteAccess(allowed: false);
@@ -174,5 +177,35 @@ class AdRepository {
         ),
       );
     }
+  }
+
+  Future<void> sold(Ad ad) async {
+    final parseObject = ParseObject(keyAdTable)..set(keyAdId, ad.id);
+
+    parseObject.set(keyAdStatus, AdStatus.SOLD.index);
+
+    final response = await parseObject.save();
+
+    if (!response.success)
+      return Future.error(
+        ParseErrors.getDescription(
+          response.error.code,
+        ),
+      );
+  }
+
+  Future<void> delete(Ad ad) async {
+    final parseObject = ParseObject(keyAdTable)..set(keyAdId, ad.id);
+
+    parseObject.set(keyAdStatus, AdStatus.DELETED.index);
+
+    final response = await parseObject.save();
+
+    if (!response.success)
+      return Future.error(
+        ParseErrors.getDescription(
+          response.error.code,
+        ),
+      );
   }
 }

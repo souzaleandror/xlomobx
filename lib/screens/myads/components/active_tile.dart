@@ -4,11 +4,13 @@ import 'package:xlomobx/helpers/extensions.dart';
 import 'package:xlomobx/models/ad.dart';
 import 'package:xlomobx/screens/ad/ad_screen.dart';
 import 'package:xlomobx/screens/create/create_screen.dart';
+import 'package:xlomobx/stores/myads_store.dart';
 
 class ActiveTile extends StatelessWidget {
-  ActiveTile(this.ad);
+  ActiveTile(this.ad, this.store);
 
   final Ad ad;
+  final MyAdsStore store;
 
   final List<MenuChoice> choices = [
     MenuChoice(index: 0, title: 'Editar', iconData: Icons.edit),
@@ -88,8 +90,10 @@ class ActiveTile extends StatelessWidget {
                           editAd(context);
                           break;
                         case 1:
+                          soldAd(context);
                           break;
                         case 2:
+                          deleteAd(context);
                           break;
                       }
                     },
@@ -137,8 +141,72 @@ class ActiveTile extends StatelessWidget {
   }
 
   Future<void> editAd(BuildContext context) async {
-    Navigator.of(context)
+    final success = await Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => CreateScreen(ad: ad)));
+
+    if (success != null && success) {
+      store.refresh();
+    }
+  }
+
+  void soldAd(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('Vendido'),
+        content: Text('Confirmar a venda de ${ad.title} ?'),
+        actions: [
+          FlatButton(
+            onPressed: Navigator.of(context).pop,
+            child: Text(
+              'Nao',
+            ),
+          ),
+          FlatButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              store.soldAd(ad);
+            },
+            child: Text(
+              'Sim',
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void deleteAd(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('Deletar'),
+        content: Text('Confirmar para excluir ${ad.title} ?'),
+        actions: [
+          FlatButton(
+            onPressed: Navigator.of(context).pop,
+            child: Text(
+              'Nao',
+            ),
+          ),
+          FlatButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              store.deleteAd(ad);
+            },
+            child: Text(
+              'Sim',
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

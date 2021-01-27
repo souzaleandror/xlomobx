@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xlomobx/components/custom_drawer/custom_drawer.dart';
+import 'package:xlomobx/screens/edit_account/edit_account_screen.dart';
 import 'package:xlomobx/screens/myads/myads_screen.dart';
 import 'package:xlomobx/stores/user_manager_store.dart';
 
@@ -31,19 +33,24 @@ class AccountScreen extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            GetIt.I<UserManagerStore>().userModel.name,
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.purple,
-                                fontWeight: FontWeight.w900),
+                          Observer(
+                            builder: (_) {
+                              return Text(
+                                GetIt.I<UserManagerStore>().userModel.name,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.purple,
+                                    fontWeight: FontWeight.w900),
+                              );
+                            },
                           ),
                           Text(
                             GetIt.I<UserManagerStore>().userModel.email,
                             style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.grey[700],
-                                fontWeight: FontWeight.w300),
+                              fontSize: 20,
+                              color: Colors.grey[700],
+                              fontWeight: FontWeight.w300,
+                            ),
                           )
                         ],
                       ),
@@ -51,9 +58,17 @@ class AccountScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.topRight,
                       child: FlatButton(
-                        child: Text('EDITAR'),
+                        child: Text(
+                          'EDITAR',
+                        ),
                         textColor: Colors.purple,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => EditAccountScreen(),
+                            ),
+                          );
+                        },
                       ),
                     )
                   ],

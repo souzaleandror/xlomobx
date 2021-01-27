@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:xlomobx/components/empty_card.dart';
 import 'package:xlomobx/screens/myads/components/pending_tile.dart';
 import 'package:xlomobx/stores/myads_store.dart';
 
@@ -54,41 +55,53 @@ class _MyAdsScreenState extends State<MyAdsScreen>
           ],
         ),
       ),
-      body: TabBarView(
-        controller: tabController,
-        children: [
-          Observer(builder: (_) {
-            if (store.activeAds.isEmpty) return Container();
+      body: Observer(builder: (_) {
+        if (store.loading == true)
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.purple),
+            ),
+          );
 
-            return ListView.builder(
-              itemCount: store.activeAds.length,
-              itemBuilder: (_, index) {
-                return ActiveTile(store.activeAds[index]);
-              },
-            );
-          }),
-          Observer(builder: (_) {
-            if (store.pendingAds.isEmpty) return Container();
+        return TabBarView(
+          controller: tabController,
+          children: [
+            Observer(builder: (_) {
+              if (store.activeAds.isEmpty)
+                return EmptyCard('Voce nao possui nenhum anuncio ativo');
 
-            return ListView.builder(
-              itemCount: store.pendingAds.length,
-              itemBuilder: (_, index) {
-                return PendingTile(store.pendingAds[index]);
-              },
-            );
-          }),
-          Observer(builder: (_) {
-            if (store.soldAds.isEmpty) return Container();
+              return ListView.builder(
+                itemCount: store.activeAds.length,
+                itemBuilder: (_, index) {
+                  return ActiveTile(store.activeAds[index], store);
+                },
+              );
+            }),
+            Observer(builder: (_) {
+              if (store.pendingAds.isEmpty)
+                return EmptyCard('Voce nao possui nenhum anuncio pendente');
 
-            return ListView.builder(
-              itemCount: store.soldAds.length,
-              itemBuilder: (_, index) {
-                return SoldTile(store.soldAds[index]);
-              },
-            );
-          }),
-        ],
-      ),
+              return ListView.builder(
+                itemCount: store.pendingAds.length,
+                itemBuilder: (_, index) {
+                  return PendingTile(store.pendingAds[index]);
+                },
+              );
+            }),
+            Observer(builder: (_) {
+              if (store.soldAds.isEmpty)
+                return EmptyCard('Voce nao possui nenhum anuncio vendido');
+
+              return ListView.builder(
+                itemCount: store.soldAds.length,
+                itemBuilder: (_, index) {
+                  return SoldTile(store.soldAds[index], store);
+                },
+              );
+            }),
+          ],
+        );
+      }),
     );
   }
 }

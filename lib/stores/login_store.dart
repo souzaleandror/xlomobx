@@ -51,6 +51,7 @@ abstract class _LoginStore with Store {
   @action
   Future<void> _login() async {
     loading = true;
+    error = null;
 
     try {
       error = null;
