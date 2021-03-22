@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:xlomobx/models/ad.dart';
 import 'package:xlomobx/models/category.dart';
 import 'package:xlomobx/repositories/ad_repository.dart';
+import 'package:xlomobx/stores/connectivity_store.dart';
 import 'package:xlomobx/stores/filter_store.dart';
 
 part 'home_store.g.dart';
@@ -10,8 +12,11 @@ part 'home_store.g.dart';
 class HomeStore = _HomeStore with _$HomeStore;
 
 abstract class _HomeStore with Store {
+  final ConnectivityStore connectivityStore = GetIt.I<ConnectivityStore>();
+
   _HomeStore() {
     autorun((_) async {
+      connectivityStore.connected;
       try {
         setLoading(true);
         final newAds = await AdRepository().getHomeAdList(

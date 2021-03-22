@@ -4,6 +4,8 @@ import 'package:get_it/get_it.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:xlomobx/screens/base/base_screen.dart';
 import 'package:xlomobx/stores/category_store.dart';
+import 'package:xlomobx/stores/connectivity_store.dart';
+import 'package:xlomobx/stores/favorite_store.dart';
 import 'package:xlomobx/stores/home_store.dart';
 import 'package:xlomobx/stores/page_store.dart';
 import 'package:xlomobx/stores/user_manager_store.dart';
@@ -37,10 +39,12 @@ Future<void> initalizedParse() async {
 }
 
 void setupLocators() {
+  GetIt.I.registerSingleton(ConnectivityStore());
   GetIt.I.registerSingleton(PageStore());
   GetIt.I.registerSingleton(HomeStore());
   GetIt.I.registerSingleton(UserManagerStore());
   GetIt.I.registerSingleton(CategoryStore());
+  GetIt.I.registerSingleton(FavoriteStore());
 }
 
 class MyApp extends StatelessWidget {
